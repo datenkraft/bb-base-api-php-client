@@ -1,0 +1,8 @@
+version: "3"
+services:
+  bb-base-api-php-client:
+    image: europe-docker.pkg.dev/dk-gg-rgstry/base/php:dev
+    container_name: bb_base_api_php_client
+    volumes:
+      - ./:/var/www
+    working_dir: /var/www
