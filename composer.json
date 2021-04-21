@@ -1,0 +1,21 @@
+{
+  "name": "datenkraft/bb-base-api-php-client",
+  "require": {
+    "league/oauth2-client": "^2.6",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.6",
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Datenkraft\\Backbone\\BaseApiClient\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests/"
+    ]
+  }
+}
