@@ -1,6 +1,6 @@
 <?php
 
-namespace BBBaseApiPhpClient\Auth;
+namespace Datenkraft\Backbone\BaseApiClient\Auth;
 
 use Exception;
 use GuzzleHttp\Client;
@@ -18,7 +18,7 @@ class Auth
     ): string {
         // Load oAuthTokenUrl from config if it is not specified
         if ($oAuthTokenUrl === null) {
-            $config = include('config/config.php');
+            $config = require('config/config.php');
             $oAuthTokenUrl = $config['oAuthTokenUrl'];
         }
 

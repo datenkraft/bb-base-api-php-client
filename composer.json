@@ -10,7 +10,7 @@
   },
   "autoload": {
     "psr-4": {
-      "BBBaseApiPhpClient\\": "src/"
+      "Datenkraft\\Backbone\\BaseApiClient\\": "src/"
     }
   },
   "autoload-dev": {

@@ -1,6 +1,6 @@
 <?php
 
-namespace BBBaseApiPhpClient\Auth;
+namespace Datenkraft\Backbone\BaseApiClient\Auth;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
