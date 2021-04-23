@@ -39,7 +39,7 @@ class ClientFactory
      */
     public function getToken(): string
     {
-        if (is_null($this->token)){
+        if (is_null($this->token)) {
             $this->setToken($this->generateToken());
         }
         return $this->token;
@@ -68,7 +68,7 @@ class ClientFactory
     /**
      * @param string $clientClass
      * @param string|null $endpointUrl
-     * @return Client
+     * @return mixed
      * @psalm-template ConcreteClientType of object
      * @psalm-param class-string<ConcreteClientType> $clientClass
      * @psalm-return ConcreteClientType
@@ -84,10 +84,10 @@ class ClientFactory
             ['Authorization' => "Bearer " . $this->getToken()]
         );
 
-        if (null !== $endpointUrl){
+        if (null !== $endpointUrl) {
             $guzzleOptions = [];
             //check if local call to disable ssl verification
-            if (strpos($endpointUrl, "://localhost") !== false){
+            if (strpos($endpointUrl, "://localhost") !== false) {
                 $guzzleOptions[RequestOptions::VERIFY] = false;
             }
 
@@ -126,3 +126,4 @@ class ClientFactory
         );
     }
 }
+
