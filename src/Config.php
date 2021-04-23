@@ -1,0 +1,145 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Datenkraft\Backbone\Client\BaseApi;
+
+use Datenkraft\Backbone\Client\BaseApi\Exceptions\ConfigException;
+use GuzzleHttp\Client;
+
+class Config
+{
+    /**
+     * @var string
+     */
+    protected $clientId;
+
+    /**
+     * @var string
+     */
+    protected $clientSecret;
+
+    /**
+     * @var string
+     */
+    protected $oAuthTokenUrl;
+
+    /**
+     * @var array
+     */
+    protected $oauthScopes;
+
+    /**
+     * @return string
+     */
+    public function getClientId(): string
+    {
+        return $this->clientId;
+    }
+
+    /**
+     * @param string $clientId
+     * @return Config
+     */
+    public function setClientId(string $clientId): Config
+    {
+        $this->clientId = $clientId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientSecret(): string
+    {
+        return $this->clientSecret;
+    }
+
+    /**
+     * @param string $clientSecret
+     * @return Config
+     */
+    public function setClientSecret(string $clientSecret): Config
+    {
+        $this->clientSecret = $clientSecret;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOAuthTokenUrl(): string
+    {
+        return $this->oAuthTokenUrl;
+    }
+
+    /**
+     * @param string $oAuthTokenUrl
+     * @return Config
+     */
+    public function setOAuthTokenUrl(string $oAuthTokenUrl): Config
+    {
+        $this->oAuthTokenUrl = $oAuthTokenUrl;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOauthScopes(): array
+    {
+        return $this->oauthScopes;
+    }
+
+    /**
+     * @param array $oauthScopes
+     * @return Config
+     */
+    public function setOauthScopes(array $oauthScopes): Config
+    {
+        $this->oauthScopes = $oauthScopes;
+        return $this;
+    }
+
+    /**
+     * @param array $config
+     * @return Config
+     * @throws ConfigException
+     */
+    public static function create(array $config): Config
+    {
+        static::verifyConfig($config);
+        $configObject = new static();
+
+        $configObject->setClientId($config['clientId']);
+        $configObject->setClientSecret($config['clientSecret']);
+        $configObject->setOauthScopes($config['oauthScopes']);
+        $configObject->setOAuthTokenUrl($config['oAuthTokenUrl']);
+
+        return $configObject;
+    }
+
+    /**
+     * Config constructor.
+     */
+    protected function __construct()
+    {
+
+    }
+
+    /**
+     * @param array $config
+     * @throws ConfigException
+     */
+    protected static function verifyConfig(array $config): void
+    {
+        if (
+            empty($config['clientId'])
+            || empty($config['clientSecret'])
+            || empty($config['oAuthTokenUrl'])
+            || !is_array($config['oauthScopes'])
+        ){
+            throw new ConfigException('Missing config key');
+        }
+    }
+}

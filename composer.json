@@ -1,8 +1,23 @@
 {
   "name": "datenkraft/bb-base-api-php-client",
+  "type": "library",
+  "description": "API Client that enables you to work with Backbone PHP Client packages",
+  "keywords": [
+    "apiclient",
+    "backbone",
+    "php",
+    "base"
+  ],
+  "license": "MIT",
+  "authors": [{
+    "name": "Datenkraft GmbH"
+  }],
   "require": {
+    "php": "^7.2",
+    "guzzlehttp/guzzle": "^7.3",
+    "jane-php/open-api-runtime": "~6.1.0",
     "league/oauth2-client": "^2.6",
-    "ext-json": "*"
+    "nyholm/psr7": "^1.4"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.6",
@@ -10,7 +25,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Datenkraft\\Backbone\\BaseApiClient\\": "src/"
+      "Datenkraft\\Backbone\\Client\\BaseApi\\": "src/"
     }
   },
   "autoload-dev": {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Datenkraft\Backbone\BaseApiClient\Auth;
+namespace Datenkraft\Backbone\Client\BaseApi\Auth;
 
 use Exception;
 use GuzzleHttp\Client;

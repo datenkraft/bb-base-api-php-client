@@ -1,6 +1,6 @@
 <?php
 
-namespace Datenkraft\Backbone\BaseApiClient\Auth;
+namespace Datenkraft\Backbone\Client\BaseApi\Auth;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
@@ -25,7 +25,7 @@ class AuthTest extends TestCase
     public function testAuthorize(): void
     {
         // Url of the auth server (local instance running in the same docker network)
-        $oAuthTokenUrl = 'https://bb_authorization_api:3000/oauth/token';
+        $oAuthTokenUrl = 'https://localhost:30250/oauth/token';
 
         // Valid clientId, clientSecret and requested scopes
         $clientId = '933daa6d-90da-44d5-8f2b-13f97fb2659c';
