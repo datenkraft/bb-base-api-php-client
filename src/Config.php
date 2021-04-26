@@ -27,7 +27,7 @@ class Config
     /**
      * @var array
      */
-    protected $oauthScopes;
+    protected $oAuthScopes;
 
     /**
      * @return string
@@ -86,18 +86,18 @@ class Config
     /**
      * @return array
      */
-    public function getOauthScopes(): array
+    public function getOAuthScopes(): array
     {
-        return $this->oauthScopes;
+        return $this->oAuthScopes;
     }
 
     /**
-     * @param array $oauthScopes
+     * @param array $oAuthScopes
      * @return Config
      */
-    public function setOauthScopes(array $oauthScopes): Config
+    public function setOAuthScopes(array $oAuthScopes): Config
     {
-        $this->oauthScopes = $oauthScopes;
+        $this->oAuthScopes = $oAuthScopes;
         return $this;
     }
 
@@ -108,12 +108,14 @@ class Config
      */
     public static function create(array $config): Config
     {
+        //$config = array_merge(require('../bb-base-api-client/config/config.php'), $config);
         static::verifyConfig($config);
+
         $configObject = new static();
 
         $configObject->setClientId($config['clientId']);
         $configObject->setClientSecret($config['clientSecret']);
-        $configObject->setOauthScopes($config['oauthScopes']);
+        $configObject->setOAuthScopes($config['oAuthScopes']);
         $configObject->setOAuthTokenUrl($config['oAuthTokenUrl']);
 
         return $configObject;
@@ -136,8 +138,7 @@ class Config
         if (
             empty($config['clientId'])
             || empty($config['clientSecret'])
-            || empty($config['oAuthTokenUrl'])
-            || !is_array($config['oauthScopes'])
+            || !is_array($config['oAuthScopes'])
         ){
             throw new ConfigException('Missing config key');
         }

@@ -87,9 +87,9 @@ class ClientFactory
         if (null !== $endpointUrl){
             $guzzleOptions = [];
             //check if local call to disable ssl verification
-            if (strpos($endpointUrl, "://localhost") !== false){
+            //if (strpos($endpointUrl, "://localhost") !== false){
                 $guzzleOptions[RequestOptions::VERIFY] = false;
-            }
+            //}
 
             $httpClient = $this->createHttpClient($guzzleOptions);
 
@@ -120,7 +120,7 @@ class ClientFactory
         return Auth::authorize(
             $this->getConfig()->getClientId(),
             $this->getConfig()->getClientSecret(),
-            $this->getConfig()->getOauthScopes(),
+            $this->getConfig()->getOAuthScopes(),
             $this->createHttpClient([RequestOptions::VERIFY => false]),
             $this->getConfig()->getOAuthTokenUrl()
         );
