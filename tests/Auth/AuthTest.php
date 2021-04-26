@@ -25,12 +25,14 @@ class AuthTest extends TestCase
     public function testAuthorize(): void
     {
         // Url of the auth server (local instance running in the same docker network)
-        $oAuthTokenUrl = 'https://localhost:30250/oauth/token';
+        $oAuthTokenUrl = 'https://bb_authorization_api:3000/oauth/token';
 
         // Valid clientId, clientSecret and requested scopes
+
         $clientId = '9348d5e5-207b-4007-b04b-2de94c23a661';
         $clientSecret = 'VzWDpPwsGAkdaekYTQI0iAm919sgkp2QxbyFHTIH';
         $oAuthScopes =['sku-usage:add'];
+
 
         // Disable SSL certificate validation (local auth server uses self-signed certificates)
         $guzzleClient = new Client(
