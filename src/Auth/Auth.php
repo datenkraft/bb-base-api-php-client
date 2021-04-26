@@ -27,7 +27,6 @@ class Auth
             [
                 'clientId' => $clientId,
                 'clientSecret' => $clientSecret,
-                'scopes' => $oAuthScopes,
                 'urlAccessToken' => $oAuthTokenUrl,
                 'urlResourceOwnerDetails' => '',
                 'urlAuthorize' => '',
@@ -41,7 +40,7 @@ class Auth
 
         try {
             // Try to get an access token using the client credentials grant
-            return $provider->getAccessToken('client_credentials');
+            return $provider->getAccessToken('client_credentials', ['scope' => $oAuthScopes]);
         } catch (Exception $e) {
             // Failed to get the access token
             // Handle the error properly when error handling is implemented
