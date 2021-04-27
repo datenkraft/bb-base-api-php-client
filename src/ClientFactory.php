@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Datenkraft\Backbone\Client\BaseApi;
 
 use Datenkraft\Backbone\Client\BaseApi\Auth\Auth;
-use Datenkraft\Backbone\Client\BaseApi\Config;
 use Datenkraft\Backbone\Client\BaseApi\Exceptions\ConfigException;
 use GuzzleHttp\RequestOptions;
 use Http\Client\Common\Plugin\AddHostPlugin;
@@ -86,11 +85,9 @@ class ClientFactory
 
         if (null !== $endpointUrl) {
             $guzzleOptions = [];
-            //check if local call to disable ssl verification
 
-            //if (strpos($endpointUrl, "://localhost") !== false){
-                $guzzleOptions[RequestOptions::VERIFY] = false;
-            //}
+            //check if local call to disable ssl verification
+            $guzzleOptions = $this->addOptionToRemoveSSlVerificationIfNeeded($guzzleOptions);
 
             $httpClient = $this->createHttpClient($guzzleOptions);
 
@@ -114,15 +111,31 @@ class ClientFactory
     }
 
     /**
+     * @param array $guzzleOptions
+     * @return array
+     */
+    protected function addOptionToRemoveSSlVerificationIfNeeded(array $guzzleOptions): array
+    {
+        //if (strpos($endpointUrl, "://localhost") !== false){
+            $guzzleOptions[RequestOptions::VERIFY] = false;
+        //}
+
+        return $guzzleOptions;
+    }
+
+    /**
      * @return string
      */
     protected function generateToken(): string
     {
+        $guzzleOptions = [];
+        $guzzleOptions = $this->addOptionToRemoveSSlVerificationIfNeeded($guzzleOptions);
+
         return Auth::authorize(
             $this->getConfig()->getClientId(),
             $this->getConfig()->getClientSecret(),
             $this->getConfig()->getOAuthScopes(),
-            $this->createHttpClient([RequestOptions::VERIFY => false]),
+            $this->createHttpClient($guzzleOptions),
             $this->getConfig()->getOAuthTokenUrl()
         );
     }
