@@ -84,13 +84,10 @@ class ClientFactory
         );
 
         if (null !== $endpointUrl) {
-            $guzzleOptions = [];
-
             //check if local call to disable ssl verification
-            $guzzleOptions = $this->addOptionToRemoveSSlVerificationIfNeeded($guzzleOptions);
+            $guzzleOptions = $this->addOptionToRemoveSSlVerificationIfNeeded();
 
             $httpClient = $this->createHttpClient($guzzleOptions);
-
             $uri = Psr17FactoryDiscovery::findUriFactory()->createUri($endpointUrl);
             $plugins[] = new AddHostPlugin($uri);
             $httpClient = new PluginClient($httpClient, $plugins);
@@ -114,7 +111,7 @@ class ClientFactory
      * @param array $guzzleOptions
      * @return array
      */
-    protected function addOptionToRemoveSSlVerificationIfNeeded(array $guzzleOptions): array
+    protected function addOptionToRemoveSSlVerificationIfNeeded(array $guzzleOptions = []): array
     {
         //if (strpos($endpointUrl, "://localhost") !== false){
             $guzzleOptions[RequestOptions::VERIFY] = false;
@@ -128,8 +125,7 @@ class ClientFactory
      */
     protected function generateToken(): string
     {
-        $guzzleOptions = [];
-        $guzzleOptions = $this->addOptionToRemoveSSlVerificationIfNeeded($guzzleOptions);
+        $guzzleOptions = $this->addOptionToRemoveSSlVerificationIfNeeded();
 
         return Auth::authorize(
             $this->getConfig()->getClientId(),
