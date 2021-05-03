@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Datenkraft\Backbone\Client\BaseApi;
 
 use Datenkraft\Backbone\Client\BaseApi\Exceptions\ConfigException;
-use GuzzleHttp\Client;
 
 class Config
 {
@@ -28,6 +27,11 @@ class Config
      * @var array
      */
     protected $oAuthScopes;
+
+    /**
+     * @var string
+     */
+    protected $verifySsl;
 
     /**
      * @return string
@@ -102,6 +106,24 @@ class Config
     }
 
     /**
+     * @return string
+     */
+    public function getVerifySsl(): string
+    {
+        return $this->verifySsl;
+    }
+
+    /**
+     * @param string $verifySsl
+     * @return Config
+     */
+    public function setVerifySsl(string $verifySsl): Config
+    {
+        $this->verifySsl = $verifySsl;
+        return $this;
+    }
+
+    /**
      * @param array $config
      * @return Config
      * @throws ConfigException
@@ -117,6 +139,7 @@ class Config
         $configObject->setClientSecret($config['clientSecret']);
         $configObject->setOAuthScopes($config['oAuthScopes']);
         $configObject->setOAuthTokenUrl($config['oAuthTokenUrl']);
+        $configObject->setVerifySsl($config['verifySsl']);
 
         return $configObject;
     }

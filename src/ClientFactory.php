@@ -113,9 +113,9 @@ class ClientFactory
      */
     protected function addOptionToRemoveSSlVerificationIfNeeded(array $guzzleOptions = []): array
     {
-        //if (strpos($endpointUrl, "://localhost") !== false){
+        if ($this->getConfig()->getVerifySsl() === 'false') {
             $guzzleOptions[RequestOptions::VERIFY] = false;
-        //}
+        }
 
         return $guzzleOptions;
     }
