@@ -108,7 +108,7 @@ class Config
      */
     public static function create(array $config): Config
     {
-        //$config = array_merge(require('../bb-base-api-client/config/config.php'), $config);
+        $config = array_merge(require(__DIR__ . '/../config/config.php'), $config);
         static::verifyConfig($config);
 
         $configObject = new static();
