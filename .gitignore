@@ -59,3 +59,4 @@ pacts/
 
 # Composer
 .composer/
+/.ash_history

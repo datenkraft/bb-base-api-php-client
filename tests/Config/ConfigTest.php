@@ -1,45 +1,78 @@
 <?php
 
-namespace Config;
+namespace Tests\Config;
 
-use Datenkraft\Backbone\Client\BaseApi\ClientFactory;
 use Datenkraft\Backbone\Client\BaseApi\Config;
-use Jane\OpenApiRuntime\Client\Client;
 use Datenkraft\Backbone\Client\BaseApi\Exceptions\ConfigException;
-use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use ReflectionException;
+use Tests\TestCase;
 
 /**
  * Class ConfigTest
- * @package Config
+ * @package Tests\Config
  * @coversDefaultClass \Datenkraft\Backbone\Client\BaseApi\Config
  */
 class ConfigTest extends TestCase
 {
-    protected function setUp(): void
+
+    /**
+     * @param bool $valid
+     * @param array $configOptions
+     * @throws ConfigException
+     * @dataProvider createDataProvider
+     * @covers ::create
+     * @covers ::verifyConfigOptions
+     */
+    public function testCreate(bool $valid, array $configOptions): void
     {
-        parent::setUp();
+        if (!$valid) {
+            $this->expectException(ConfigException::class);
+        }
+        $config = Config::create($configOptions);
+        $this->assertInstanceOf(Config::class, $config);
+        $this->assertSame($configOptions['clientId'], $config->getClientId());
     }
 
     /**
-     * @param array $expected
-     * @throws ConfigException
-     * @dataProvider createDataProvider
+     * @return \array[][]
      */
-    public function testCreate(array $expected)
-    {
-        $config = Config::create($expected);
-        $this->assertInstanceOf(Config::class, $config);
-        $this->assertSame($expected['clientId'], $config->getClientId());
-    }
-
     public function createDataProvider(): array
     {
-        return array(
-            array(['clientId' => '1', 'clientSecret' => '2', 'oAuthScopes' => ['sku-usage:add'], 'oAuthTokenUrl' => 'https://bb_authorization_api:3000/oauth/token']),
-        );
+        return [
+            [
+                true,
+                [
+                    'clientId' => 'clientId',
+                    'clientSecret' => 'clientSecret',
+                    'oAuthScopes' => ['oAuthScopes'],
+                ]
+            ],
+            [
+                false,
+                [
+                    'clientSecret' => 'clientSecret',
+                    'oAuthScopes' => ['oAuthScopes'],
+                ]
+            ],
+            [
+                false,
+                [
+                    'clientId' => 'clientId',
+                    'oAuthScopes' => ['oAuthScopes'],
+                ]
+            ],
+            [
+                false,
+                [
+                    'clientId' => 'clientId',
+                    'clientSecret' => 'clientSecret',
+                ]
+            ],
+            [
+                false,
+                [
+                    // empty
+                ]
+            ]
+        ];
     }
-
-
 }
