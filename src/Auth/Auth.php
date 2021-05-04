@@ -28,7 +28,7 @@ class Auth
     ): string {
         // Load oAuthTokenUrl from config if it is not specified
         if ($oAuthTokenUrl === null) {
-            $config = require('config/config.php');
+            $config = require(__DIR__  . '/../../config/config.php');
             $oAuthTokenUrl = $config['oAuthTokenUrl'];
         }
 

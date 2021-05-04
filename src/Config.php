@@ -149,7 +149,6 @@ class Config
      */
     protected function __construct()
     {
-
     }
 
     /**
@@ -158,11 +157,10 @@ class Config
      */
     protected static function verifyConfig(array $config): void
     {
-        if (
-            empty($config['clientId'])
+        if (empty($config['clientId'])
             || empty($config['clientSecret'])
             || !is_array($config['oAuthScopes'])
-        ){
+        ) {
             throw new ConfigException('Missing config key');
         }
     }
