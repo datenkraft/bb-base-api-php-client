@@ -2,6 +2,7 @@
 
 namespace Datenkraft\Backbone\Client\BaseApi\Auth;
 
+use Datenkraft\Backbone\Client\BaseApi\Exceptions\AuthException;
 use Exception;
 use GuzzleHttp\Client;
 use League\OAuth2\Client\Provider\GenericProvider;
@@ -9,6 +10,15 @@ use League\OAuth2\Client\Provider\GenericProvider;
 class Auth
 {
 
+    /**
+     * @param string $clientId
+     * @param string $clientSecret
+     * @param array $oAuthScopes
+     * @param Client|null $httpClient
+     * @param string|null $oAuthTokenUrl
+     * @return string
+     * @throws AuthException
+     */
     public static function authorize(
         string $clientId,
         string $clientSecret,
@@ -44,7 +54,7 @@ class Auth
         } catch (Exception $e) {
             // Failed to get the access token
             // Handle the error properly when error handling is implemented
-            exit('Failed to authorize: ' . $e->getMessage());
+            throw new AuthException('Failed to authorize: ' . $e->getMessage());
         }
     }
 }
