@@ -45,7 +45,7 @@ class Config
      * @param string $clientId
      * @return Config
      */
-    public function setClientId(string $clientId): Config
+    protected function setClientId(string $clientId): Config
     {
         $this->clientId = $clientId;
         return $this;
@@ -63,7 +63,7 @@ class Config
      * @param string $clientSecret
      * @return Config
      */
-    public function setClientSecret(string $clientSecret): Config
+    protected function setClientSecret(string $clientSecret): Config
     {
         $this->clientSecret = $clientSecret;
         return $this;
@@ -81,7 +81,7 @@ class Config
      * @param string $oAuthTokenUrl
      * @return Config
      */
-    public function setOAuthTokenUrl(string $oAuthTokenUrl): Config
+    protected function setOAuthTokenUrl(string $oAuthTokenUrl): Config
     {
         $this->oAuthTokenUrl = $oAuthTokenUrl;
         return $this;
@@ -99,7 +99,7 @@ class Config
      * @param array $oAuthScopes
      * @return Config
      */
-    public function setOAuthScopes(array $oAuthScopes): Config
+    protected function setOAuthScopes(array $oAuthScopes): Config
     {
         $this->oAuthScopes = $oAuthScopes;
         return $this;
@@ -117,53 +117,60 @@ class Config
      * @param string $verifySsl
      * @return Config
      */
-    public function setVerifySsl(string $verifySsl): Config
+    protected function setVerifySsl(string $verifySsl): Config
     {
         $this->verifySsl = $verifySsl;
         return $this;
     }
 
     /**
-     * @param array $config
+     * @param array $configOptions
      * @return Config
      * @throws ConfigException
      */
-    public static function create(array $config): Config
+    public static function create(array $configOptions): Config
     {
-        $config = array_merge(require(__DIR__ . '/../config/config.php'), $config);
-        static::verifyConfig($config);
-
-        $configObject = new static();
-
-        $configObject->setClientId($config['clientId']);
-        $configObject->setClientSecret($config['clientSecret']);
-        $configObject->setOAuthScopes($config['oAuthScopes']);
-        $configObject->setOAuthTokenUrl($config['oAuthTokenUrl']);
-        $configObject->setVerifySsl($config['verifySsl']);
-
-        return $configObject;
+        $configOptions = array_merge(require(__DIR__ . '/../config/config.php'), $configOptions);
+        return new static($configOptions);
     }
 
     /**
      * Config constructor.
+     * @param array $configOptions
+     * @throws ConfigException
      */
-    protected function __construct()
+    public function __construct(array $configOptions)
     {
+        $this->verifyConfigOptions($configOptions);
+        $this->initByConfigOptions($configOptions);
 
+        return $this;
     }
 
     /**
      * @param array $config
      * @throws ConfigException
      */
-    protected static function verifyConfig(array $config): void
+    protected function verifyConfigOptions(array $config): void
     {
-        if (
-            empty($config['clientId'])
+        if (empty($config['clientId'])
             || empty($config['clientSecret'])
+            || empty($config['oAuthScopes'])
             || !is_array($config['oAuthScopes'])
-        ){
+        ) {
             throw new ConfigException('Missing config key');
         }
+    }
+
+    /**
+     * @param array $configOptions
+     */
+    protected function initByConfigOptions(array $configOptions): void
+    {
+        $this->setClientId($configOptions['clientId']);
+        $this->setClientSecret($configOptions['clientSecret']);
+        $this->setOAuthScopes($configOptions['oAuthScopes']);
+        $this->setOAuthTokenUrl($configOptions['oAuthTokenUrl']);
+        $this->setVerifySsl($configOptions['verifySsl']);
     }
 }

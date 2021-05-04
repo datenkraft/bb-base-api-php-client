@@ -67,7 +67,7 @@ class ClientFactory
     /**
      * @param string $clientClass
      * @param string|null $endpointUrl
-     * @return mixed
+     * @return Client
      * @psalm-template ConcreteClientType of object
      * @psalm-param class-string<ConcreteClientType> $clientClass
      * @psalm-return ConcreteClientType

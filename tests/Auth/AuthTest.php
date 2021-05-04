@@ -1,38 +1,41 @@
 <?php
 
-namespace Datenkraft\Backbone\Client\BaseApi\Auth;
+namespace Tests\Auth;
 
+use Datenkraft\Backbone\Client\BaseApi\Auth\Auth;
+use Datenkraft\Backbone\Client\BaseApi\Exceptions\AuthException;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
+/**
+ * Class AuthTest
+ * @package Tests\Auth
+ * @coversDefaultClass \Datenkraft\Backbone\Client\BaseApi\Auth\Auth
+ */
 class AuthTest extends TestCase
 {
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
-    // Test OAuth2 authorization with thephpleague/oauth2-client
-    // This only serves as a demo for retrieving the token from a local instance of the auth server
-    // It has to be adapted for using it in production/staging
+    /**
+     * Test OAuth2 authorization with thephpleague/oauth2-client
+     * This only serves as a demo for retrieving the token from a local instance of the auth server
+     * It has to be adapted for using it in production/staging
+     *
+     * @throws AuthException
+     * @covers
+     */
     public function testAuthorize(): void
     {
-        // Url of the auth server (local instance running in the same docker network)
-        $oAuthTokenUrl = 'https://bb_authorization_api:3000/oauth/token';
+        // Url of the auth server
+        $oAuthTokenUrl = getenv('X_DATENKRAFT_OAUTH_TOKEN_URL');
 
         // Valid clientId, clientSecret and requested scopes
+        $clientId = getenv('X_DATENKRAFT_CLIENT_ID');
+        $clientSecret = getenv('X_DATENKRAFT_CLIENT_SECRET');
+        $oAuthScopes = getenv('X_DATENKRAFT_OUTH_SCOPE') ? [getenv('X_DATENKRAFT_OUTH_SCOPE')] : false;
 
-        $clientId = '9348d5e5-207b-4007-b04b-2de94c23a661';
-        $clientSecret = 'VzWDpPwsGAkdaekYTQI0iAm919sgkp2QxbyFHTIH';
-        $oAuthScopes =['sku-usage:add'];
-
+        if (!$oAuthTokenUrl || !$clientId || !$clientSecret || (!is_array($oAuthScopes) || count($oAuthScopes) > 0)) {
+            $this->markTestSkipped('no ouath token url, client id, client secrete or oauth scopes set in environment variables');
+        }
 
         // Disable SSL certificate validation (local auth server uses self-signed certificates)
         $guzzleClient = new Client(

@@ -5,7 +5,7 @@ namespace Datenkraft\Backbone\Client\BaseApi\Exceptions;
 
 use Exception;
 
-class ConfigException extends Exception
+class AuthException extends Exception
 {
 
 }
