@@ -153,7 +153,8 @@ class Config
      */
     protected function verifyConfigOptions(array $config): void
     {
-        if (empty($config['clientId'])
+        if (
+            empty($config['clientId'])
             || empty($config['clientSecret'])
             || empty($config['oAuthScopes'])
             || !is_array($config['oAuthScopes'])

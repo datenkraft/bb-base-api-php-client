@@ -122,6 +122,7 @@ class ClientFactory
 
     /**
      * @return string
+     * @throws Exceptions\AuthException
      */
     protected function generateToken(): string
     {
