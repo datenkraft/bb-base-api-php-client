@@ -29,7 +29,7 @@ class Config
     protected $oAuthScopes;
 
     /**
-     * @var string
+     * @var bool
      */
     protected $verifySsl;
 
@@ -106,18 +106,18 @@ class Config
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getVerifySsl(): string
+    public function getVerifySsl(): bool
     {
         return $this->verifySsl;
     }
 
     /**
-     * @param string $verifySsl
+     * @param bool $verifySsl
      * @return Config
      */
-    protected function setVerifySsl(string $verifySsl): Config
+    protected function setVerifySsl(bool $verifySsl): Config
     {
         $this->verifySsl = $verifySsl;
         return $this;
@@ -171,6 +171,6 @@ class Config
         $this->setClientSecret($configOptions['clientSecret']);
         $this->setOAuthScopes($configOptions['oAuthScopes']);
         $this->setOAuthTokenUrl($configOptions['oAuthTokenUrl']);
-        $this->setVerifySsl($configOptions['verifySsl']);
+        $this->setVerifySsl(!($configOptions['verifySsl'] === "false"));
     }
 }

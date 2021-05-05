@@ -44,7 +44,7 @@ class ConfigTest extends TestCase
         }
 
         $this->assertSame($configOptions['oAuthTokenUrl'], $config->getOAuthTokenUrl());
-        $this->assertSame($configOptions['verifySsl'], $config->getVerifySsl());
+        $this->assertSame(!($configOptions['verifySsl'] === "false"), $config->getVerifySsl());
     }
 
     /**
