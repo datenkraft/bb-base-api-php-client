@@ -85,7 +85,9 @@ workflows:
   version: 2
   *workflow-name-continuous :
     jobs:
-      - *job-name-build
+      - *job-name-build :
+          context: *context-cloud
       - *job-name-test :
+          context: *context-cloud
           requires:
             - *job-name-build
