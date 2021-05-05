@@ -1,8 +1,9 @@
-version: 2
+version: 2.1
 aliases:
   - &workflow-name-continuous "Continuous Deployment Workflow"
   - &job-name-build "Build Application"
   - &job-name-test "Test Application"
+  - &context-cloud "cloud_deployment"
 executors:
   php-dev:
     docker:
@@ -73,9 +74,7 @@ jobs:
               --report=junit \
               --report-junit=~/testresults/phpcs-junit.xml \
               --standard=PSR12 \
-              app/ \
-              routes/ \
-              config/
+              src/
       - store_test_results:
           path: ~/testresults
       - store_artifacts:
@@ -84,7 +83,9 @@ workflows:
   version: 2
   *workflow-name-continuous :
     jobs:
-      - *job-name-build
+      - *job-name-build :
+          context: *context-cloud
       - *job-name-test :
+          context: *context-cloud
           requires:
             - *job-name-build
