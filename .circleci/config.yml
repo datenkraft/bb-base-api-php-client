@@ -11,7 +11,7 @@ executors:
           username: _json_key
           password: $GCLOUD_SERVICE_ACCOUNT
 jobs:
-  *job-name-build:
+  *job-name-build :
     executor: php-dev
     steps:
       - checkout:
@@ -33,7 +33,7 @@ jobs:
           root: /var/www/project
           paths:
             - .
-  *job-name-test:
+  *job-name-test :
     executor: php-dev
     environment:
       XDEBUG_MODE: coverage
@@ -82,9 +82,9 @@ jobs:
           path: ~/testresults
 workflows:
   version: 2
-  *workflow-name-continuous:
+  *workflow-name-continuous :
     jobs:
       - *job-name-build
-      - *job-name-test:
+      - *job-name-test :
           requires:
             - *job-name-build
