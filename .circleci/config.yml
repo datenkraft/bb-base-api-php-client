@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 aliases:
   - &workflow-name-continuous "Continuous Deployment Workflow"
   - &job-name-build "Build Application"
