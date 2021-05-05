@@ -44,11 +44,6 @@ jobs:
     executor: php-dev
     environment:
       XDEBUG_MODE: coverage
-#      X_DATENKRAFT_OAUTH_TOKEN_URL: "https://bb_authorization_api:3000/oauth/token"
-#      X_DATENKRAFT_VERIFY_SSL: "false"
-#      X_DATENKRAFT_CLIENT_ID: "ClientId"
-#      X_DATENKRAFT_CLIENT_SECRET: "ClientSecret"
-#      X_DATENKRAFT_OUTH_SCOPE: "sku-usage:add"
     steps:
       - attach_workspace:
           at: ~/project
