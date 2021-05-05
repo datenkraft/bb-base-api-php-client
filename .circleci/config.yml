@@ -1,0 +1,104 @@
+version: 2
+aliases:
+  - &workflow-name-continuous "Continuous Deployment Workflow"
+  - &job-name-build "Build Application"
+  - &job-name-test "Test Application"
+  - &context-cloud "cloud_deployment"
+executors:
+  php-dev:
+    docker:
+      - image: europe-docker.pkg.dev/dk-gg-rgstry/base/php:dev
+        auth:
+          username: _json_key
+          password: $GCLOUD_SERVICE_ACCOUNT
+  gcloud:
+    docker:
+      - image: europe-docker.pkg.dev/dk-gg-rgstry/build-tools/gcloud:latest
+        auth:
+          username: _json_key
+          password: $GCLOUD_SERVICE_ACCOUNT
+jobs:
+  *job-name-build:
+    executor: php-dev
+    steps:
+      - checkout:
+          name: Checkout source code
+      - restore_cache:
+          name: Restore vendor cache
+          keys:
+            - php-vendor-lib-prod-{{ checksum "composer.json" }}
+            - php-vendor-lib-prod-
+      - run:
+          name: Install dependencies
+          command: composer install --no-dev
+      - save_cache:
+          name: Save vendor cache
+          paths:
+            - vendor
+          key: php-vendor-lib-prod-{{ checksum "composer.json" }}
+      - persist_to_workspace:
+          root: /var/www/project
+          paths:
+            - .
+  *job-name-test:
+    executor: php-dev
+    environment:
+      XDEBUG_MODE: coverage
+#      X_DATENKRAFT_OAUTH_TOKEN_URL: "https://bb_authorization_api:3000/oauth/token"
+#      X_DATENKRAFT_VERIFY_SSL: "false"
+#      X_DATENKRAFT_CLIENT_ID: "ClientId"
+#      X_DATENKRAFT_CLIENT_SECRET: "ClientSecret"
+#      X_DATENKRAFT_OUTH_SCOPE: "sku-usage:add"
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          name: Restore dev vendor cache
+          keys:
+            - php-vendor-lib-dev-{{ checksum "composer.json" }}
+            - php-vendor-lib-dev-
+      - run:
+          name: Install dev dependencies
+          command: composer install --dev
+      - save_cache:
+          name: Save dev vendor cache
+          paths:
+            - vendor
+          key: php-vendor-lib-dev-{{ checksum "composer.json" }}
+      - run:
+          name: Create folder for tests
+          command: mkdir -p ~/testresults
+      - run:
+          name: Unit tests
+          command: |
+            vendor/phpunit/phpunit/phpunit \
+              --coverage-text \
+              --log-junit ~/testresults/phpunit-junit.xml \
+              --exclude contractVerification
+      - run:
+          name: Code sniffing
+          command: |
+            vendor/squizlabs/php_codesniffer/bin/phpcs \
+              --runtime-set ignore_warnings_on_exit 1 \
+              --warning-severity=0 \
+              --report=summary \
+              --report=junit \
+              --report-junit=~/testresults/phpcs-junit.xml \
+              --standard=PSR12 \
+              app/ \
+              routes/ \
+              config/
+      - store_test_results:
+          path: ~/testresults
+      - store_artifacts:
+          path: ~/testresults
+workflows:
+  version: 2
+  *workflow-name-continuous:
+    jobs:
+      - *job-name-build:
+          context: *context-cloud
+      - *job-name-test:
+          context: *context-cloud
+          requires:
+            - *job-name-build
