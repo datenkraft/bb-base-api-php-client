@@ -74,9 +74,7 @@ jobs:
               --report=junit \
               --report-junit=~/testresults/phpcs-junit.xml \
               --standard=PSR12 \
-              app/ \
-              routes/ \
-              config/
+              src/
       - store_test_results:
           path: ~/testresults
       - store_artifacts:
