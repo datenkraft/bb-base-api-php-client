@@ -35,6 +35,7 @@ class ClientFactory
 
     /**
      * @return string
+     * @throws Exceptions\AuthException
      */
     public function getToken(): string
     {
@@ -68,6 +69,7 @@ class ClientFactory
      * @param string $clientClass
      * @param string|null $endpointUrl
      * @return Client
+     * @throws Exceptions\AuthException
      * @psalm-template ConcreteClientType of object
      * @psalm-param class-string<ConcreteClientType> $clientClass
      * @psalm-return ConcreteClientType
