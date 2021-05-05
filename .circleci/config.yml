@@ -3,6 +3,7 @@ aliases:
   - &workflow-name-continuous "Continuous Deployment Workflow"
   - &job-name-build "Build Application"
   - &job-name-test "Test Application"
+  - &context-cloud "cloud_deployment"
 executors:
   php-dev:
     docker:
