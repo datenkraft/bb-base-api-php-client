@@ -28,9 +28,10 @@ class ConfigTest extends TestCase
         if (!$valid) {
             $this->expectException(ConfigException::class);
         }
-        $configOptions = array_merge(require(__DIR__ . '/../../config/config.php'), $configOptions);
         $config = Config::create($configOptions);
         $this->assertInstanceOf(Config::class, $config);
+
+        $configOptions = array_merge(require(__DIR__ . '/../../config/config.php'), $configOptions);
 
         $this->assertSame($configOptions['clientId'], $config->getClientId());
         $this->assertSame($configOptions['clientSecret'], $config->getClientSecret());
