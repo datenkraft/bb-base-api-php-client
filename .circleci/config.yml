@@ -10,12 +10,6 @@ executors:
         auth:
           username: _json_key
           password: $GCLOUD_SERVICE_ACCOUNT
-  gcloud:
-    docker:
-      - image: europe-docker.pkg.dev/dk-gg-rgstry/build-tools/gcloud:latest
-        auth:
-          username: _json_key
-          password: $GCLOUD_SERVICE_ACCOUNT
 jobs:
   *job-name-build:
     executor: php-dev
