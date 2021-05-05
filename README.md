@@ -1,29 +1,15 @@
-# README #
+# Backbone - Base API PHP Client
 
-This README would normally document whatever steps are necessary to get your application up and running.
+## Introduction
 
-### What is this repository for? ###
+The Base API PHP Client enables you to work with Backbone PHP Client packages.
+This package is not standalone, it's required in Backbone PHP Client packages
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+## Prerequisites
+- PHP 7.2 or later for production
 
-### How do I get set up? ###
+## Installation & Usage
+It's required in Backbone PHP Client packages
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+## Licence
+This repository is available under the [MIT license](https://opensource.org/licenses/MIT).
