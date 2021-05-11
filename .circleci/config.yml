@@ -91,6 +91,9 @@ jobs:
       - run:
           name: Mirror the repository to Github
           command: |
+            mkdir -p ~/.ssh
+            touch ~/.ssh/known_hosts
+            ssh-keyscan -H github.com >> ~/.ssh/known_hosts
             git remote add github git@github.com:datenkraft/bb-base-api-php-client.git
             git push github main --tags
 workflows:
