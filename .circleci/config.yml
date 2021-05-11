@@ -90,7 +90,9 @@ jobs:
           at: ~/project
       - run:
           name: Mirror the repository to Github
-          command: git push --mirror git@github.com:datenkraft/bb-base-api-php-client.git
+          command: |
+            git remote add github git@github.com:datenkraft/bb-base-api-php-client.git
+            git push github main --tags
 workflows:
   version: 2
   *workflow-name-continuous :
