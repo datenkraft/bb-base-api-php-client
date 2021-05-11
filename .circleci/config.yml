@@ -86,8 +86,8 @@ jobs:
   *job-name-mirror :
     executor: git
     steps:
-      - attach_workspace:
-          at: ~/project
+      - checkout:
+          name: Checkout source code
       - run:
           name: Mirror the repository to Github
           command: |
