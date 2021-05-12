@@ -4,6 +4,7 @@ aliases:
   - &job-name-build "Build Application"
   - &job-name-test "Test Application"
   - &job-name-mirror "Mirror Repository to Github"
+  - &branch-main "main"
   - &context-cloud "cloud_deployment"
 executors:
   git:
@@ -110,3 +111,8 @@ workflows:
           context: *context-cloud
           requires:
             - *job-name-test
+          filters:
+            branches:
+              only: *branch-main
+            tags:
+              only: /.*/
