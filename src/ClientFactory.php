@@ -68,13 +68,13 @@ class ClientFactory
     /**
      * @param string $clientClass
      * @param string|null $endpointUrl
-     * @return Client
+     * @return mixed
      * @throws Exceptions\AuthException
      * @psalm-template ConcreteClientType of object
      * @psalm-param class-string<ConcreteClientType> $clientClass
      * @psalm-return ConcreteClientType
      */
-    public function createClient(string $clientClass, string $endpointUrl = null): Client
+    public function createClient(string $clientClass, string $endpointUrl = null)
     {
         /**
          * @var Client $clientClass
