@@ -3,8 +3,12 @@ aliases:
   - &workflow-name-continuous "Continuous Deployment Workflow"
   - &job-name-build "Build Application"
   - &job-name-test "Test Application"
+  - &job-name-mirror "Mirror Repository to Github"
   - &context-cloud "cloud_deployment"
 executors:
+  git:
+    docker:
+      - image: alpine/git:latest
   php-dev:
     docker:
       - image: europe-docker.pkg.dev/dk-gg-rgstry/base/php:dev
@@ -79,6 +83,19 @@ jobs:
           path: ~/testresults
       - store_artifacts:
           path: ~/testresults
+  *job-name-mirror :
+    executor: git
+    steps:
+      - checkout:
+          name: Checkout source code
+      - run:
+          name: Mirror the repository to Github
+          command: |
+            mkdir -p ~/.ssh
+            touch ~/.ssh/known_hosts
+            ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+            git remote add github git@github.com:datenkraft/bb-base-api-php-client.git
+            git push github main --tags
 workflows:
   version: 2
   *workflow-name-continuous :
@@ -89,3 +106,7 @@ workflows:
           context: *context-cloud
           requires:
             - *job-name-build
+      - *job-name-mirror :
+          context: *context-cloud
+          requires:
+            - *job-name-test
