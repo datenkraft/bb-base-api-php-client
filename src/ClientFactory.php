@@ -8,6 +8,7 @@ use Datenkraft\Backbone\Client\BaseApi\Auth\Auth;
 use Datenkraft\Backbone\Client\BaseApi\Exceptions\ConfigException;
 use GuzzleHttp\RequestOptions;
 use Http\Client\Common\Plugin\AddHostPlugin;
+use Http\Client\Common\Plugin\AddPathPlugin;
 use Http\Client\Common\Plugin\HeaderAppendPlugin;
 use Http\Client\Common\PluginClient;
 use Http\Discovery\Psr17FactoryDiscovery;
@@ -92,6 +93,7 @@ class ClientFactory
             $httpClient = $this->createHttpClient($guzzleOptions);
             $uri = Psr17FactoryDiscovery::findUriFactory()->createUri($endpointUrl);
             $plugins[] = new AddHostPlugin($uri);
+            $plugins[] = new AddPathPlugin($uri);
             $httpClient = new PluginClient($httpClient, $plugins);
 
             /** @noinspection PhpUndefinedMethodInspection */
