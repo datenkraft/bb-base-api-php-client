@@ -108,18 +108,11 @@ workflows:
           context: *context-cloud
           requires:
             - *job-name-build
-      - *job-name-mirror :
-          context: *context-cloud
-          requires:
-            - *job-name-test
-          filters:
-            branches:
-              only: *branch-main
   *workflow-name-mirroring :
     when:
       condition:
         equal: [ *branch-main, << pipeline.git.branch >> ]
-    jobs: 
+    jobs:
       - *job-name-mirror:
           context: *context-cloud
           filters:
