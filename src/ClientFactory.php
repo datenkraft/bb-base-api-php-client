@@ -7,8 +7,6 @@ namespace Datenkraft\Backbone\Client\BaseApi;
 use Datenkraft\Backbone\Client\BaseApi\Auth\Auth;
 use Datenkraft\Backbone\Client\BaseApi\Exceptions\ConfigException;
 use GuzzleHttp\RequestOptions;
-use Http\Client\Common\Plugin\AddHostPlugin;
-use Http\Client\Common\Plugin\AddPathPlugin;
 use Http\Client\Common\Plugin\BaseUriPlugin;
 use Http\Client\Common\Plugin\HeaderAppendPlugin;
 use Http\Client\Common\PluginClient;
