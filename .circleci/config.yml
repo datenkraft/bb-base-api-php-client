@@ -116,11 +116,12 @@ workflows:
             branches:
               only: *branch-main
   *workflow-name-mirroring :
+      when:
+        condition:
+          equal: [ *branch-main, << pipeline.git.branch >> ]
       jobs:
         - *job-name-mirror :
             context: *context-cloud
             filters:
-              branches:
-                only: *branch-main
               tags:
                 only: /^(v)(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
