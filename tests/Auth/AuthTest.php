@@ -33,8 +33,8 @@ class AuthTest extends TestCase
         $clientSecret = getenv('X_DATENKRAFT_CLIENT_SECRET');
         $oAuthScopes = getenv('X_DATENKRAFT_OAUTH_SCOPE') ? [getenv('X_DATENKRAFT_OAUTH_SCOPE')] : false;
 
-        if (!$oAuthTokenUrl || !$clientId || !$clientSecret || (!is_array($oAuthScopes) || count($oAuthScopes) > 0)) {
-            $this->markTestSkipped('no ouath token url, client id, client secrete or oauth scopes set in environment variables');
+        if (!$oAuthTokenUrl || !$clientId || !$clientSecret || (!is_array($oAuthScopes) || count($oAuthScopes) === 0)) {
+            $this->markTestSkipped('no oauth token url, client id, client secrete or oauth scopes set in environment variables');
         }
 
         // Disable SSL certificate validation (local auth server uses self-signed certificates)
