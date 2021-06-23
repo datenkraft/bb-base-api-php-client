@@ -172,6 +172,6 @@ class Config
         $this->setClientSecret($configOptions['clientSecret']);
         $this->setOAuthScopes($configOptions['oAuthScopes']);
         $this->setOAuthTokenUrl($configOptions['oAuthTokenUrl']);
-        $this->setVerifySsl(!($configOptions['verifySsl'] === "false"));
+        $this->setVerifySsl($configOptions['verifySsl']);
     }
 }
