@@ -9,11 +9,13 @@
     "base"
   ],
   "license": "MIT",
-  "authors": [{
-    "name": "Datenkraft GmbH"
-  }],
+  "authors": [
+    {
+      "name": "Datenkraft GmbH"
+    }
+  ],
   "require": {
-    "php": "^7.2",
+    "php": "^7.2 || ^8.0",
     "guzzlehttp/guzzle": "^6.0 || ^7.3",
     "jane-php/open-api-runtime": "^6.3.0",
     "league/oauth2-client": "^2.6",
