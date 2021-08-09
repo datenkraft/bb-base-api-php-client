@@ -26,8 +26,7 @@ jobs:
       - restore_cache:
           name: Restore vendor cache
           keys:
-            - php-vendor-lib-prod-{{ checksum "composer.json" }}
-            - php-vendor-lib-prod-
+            - php-vendor-lib-prod-{{ checksum "composer.lock" }}
       - run:
           name: Install dependencies
           command: composer install --no-dev
@@ -35,7 +34,7 @@ jobs:
           name: Save vendor cache
           paths:
             - vendor
-          key: php-vendor-lib-prod-{{ checksum "composer.json" }}
+          key: php-vendor-lib-prod-{{ checksum "composer.lock" }}
       - persist_to_workspace:
           root: /var/www/project
           paths:
@@ -50,8 +49,7 @@ jobs:
       - restore_cache:
           name: Restore dev vendor cache
           keys:
-            - php-vendor-lib-dev-{{ checksum "composer.json" }}
-            - php-vendor-lib-dev-
+            - php-vendor-lib-dev-{{ checksum "composer.lock" }}
       - run:
           name: Install dev dependencies
           command: composer install --dev
@@ -59,7 +57,7 @@ jobs:
           name: Save dev vendor cache
           paths:
             - vendor
-          key: php-vendor-lib-dev-{{ checksum "composer.json" }}
+          key: php-vendor-lib-dev-{{ checksum "composer.lock" }}
       - run:
           name: Create folder for tests
           command: mkdir -p ~/testresults
