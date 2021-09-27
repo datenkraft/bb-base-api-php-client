@@ -41,7 +41,7 @@ class Config
     /**
      * @var array
      */
-    protected $required;
+    protected $requiredConfigKeys;
 
     /**
      * @return string
@@ -136,18 +136,18 @@ class Config
     /**
      * @return array
      */
-    public function getRequired(): array
+    public function getRequiredConfigKeys(): array
     {
-        return $this->required;
+        return $this->requiredConfigKeys;
     }
 
     /**
-     * @param array $required
+     * @param array $requiredConfigKeys
      * @return Config
      */
-    protected function setRequired(array $required): Config
+    protected function setRequiredConfigKeys(array $requiredConfigKeys): Config
     {
-        $this->required = $required;
+        $this->requiredConfigKeys = $requiredConfigKeys;
         return $this;
     }
 
@@ -196,7 +196,7 @@ class Config
                 'verifySsl' => 'boolean'
             ]
         );
-        $this->setRequired(['clientId', 'clientSecret']);
+        $this->setRequiredConfigKeys(['clientId', 'clientSecret']);
         $this->verifyConfigOptions($configOptions);
         $this->initByConfigOptions($configOptions);
 
@@ -209,8 +209,8 @@ class Config
      */
     protected function verifyConfigOptions(array $config): void
     {
-        $this->verifyRequired($config);
-        $this->verifyUnknownKeys($config);
+        $this->verifyRequiredConfigKeys($config);
+        $this->verifyUnknownConfigKeys($config);
         $this->verifyConfigKeys($config);
     }
 
@@ -218,11 +218,11 @@ class Config
      * @param array $config
      * @throws ConfigException
      */
-    protected function verifyRequired(array $config): void
+    protected function verifyRequiredConfigKeys(array $config): void
     {
-        foreach ($this->getRequired() as $requiredKey) {
-            if (empty($config[$requiredKey])) {
-                throw new ConfigException('Missing required config key ' . $requiredKey);
+        foreach ($this->getRequiredConfigKeys() as $requiredConfigKeysKey) {
+            if (empty($config[$requiredConfigKeysKey])) {
+                throw new ConfigException('Missing required config key ' . $requiredConfigKeysKey);
             }
         }
     }
@@ -244,7 +244,7 @@ class Config
      * @param array $config
      * @throws ConfigException
      */
-    protected function verifyUnknownKeys(array $config): void
+    protected function verifyUnknownConfigKeys(array $config): void
     {
         $allowedKeys = array_keys($this->getConfigKeys());
         $keys = array_keys($config);

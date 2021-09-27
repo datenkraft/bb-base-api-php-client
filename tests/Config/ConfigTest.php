@@ -113,9 +113,9 @@ class ConfigTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::setConfigKeys
-     * @covers ::setRequired
+     * @covers ::setRequiredConfigKeys
      * @covers ::getConfigKeys
-     * @covers ::getRequired
+     * @covers ::getRequiredConfigKeys
      * @throws ReflectionException
      */
     public function testConstruct(): void
@@ -134,7 +134,7 @@ class ConfigTest extends TestCase
         $this->assertInstanceOf(Config::class, $result);
 
         $this->assertIsArray($result->getConfigKeys());
-        $this->assertIsArray($result->getRequired());
+        $this->assertIsArray($result->getRequiredConfigKeys());
     }
 
     /**
@@ -146,43 +146,43 @@ class ConfigTest extends TestCase
         $this->object = $this
             ->getMockBuilder(Config::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['verifyRequired', 'verifyUnknownKeys', 'verifyConfigKeys'])
+            ->onlyMethods(['verifyRequiredConfigKeys', 'verifyUnknownConfigKeys', 'verifyConfigKeys'])
             ->getMock();
 
-        $this->object->expects($this->once())->method('verifyRequired')->with($this->configOptions);
-        $this->object->expects($this->once())->method('verifyUnknownKeys')->with($this->configOptions);
+        $this->object->expects($this->once())->method('verifyRequiredConfigKeys')->with($this->configOptions);
+        $this->object->expects($this->once())->method('verifyUnknownConfigKeys')->with($this->configOptions);
         $this->object->expects($this->once())->method('verifyConfigKeys')->with($this->configOptions);
 
         $this->invokeMethod([$this->object, 'verifyConfigOptions'], [$this->configOptions]);
     }
 
     /**
-     * @covers ::verifyRequired
-     * @dataProvider dataProviderTestVerifyRequired
+     * @covers ::verifyRequiredConfigKeys
+     * @dataProvider dataProviderTestVerifyRequiredConfigKeys
      * @throws ReflectionException
      */
-    public function testVerifyRequired(array $required, array $config, ?string $exception = null): void
+    public function testVerifyRequiredConfigKeys(array $required, array $config, ?string $exception = null): void
     {
         $this->object = $this
             ->getMockBuilder(Config::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getRequired'])
+            ->onlyMethods(['getRequiredConfigKeys'])
             ->getMock();
 
-        $this->object->expects($this->once())->method('getRequired')->willReturn($required);
+        $this->object->expects($this->once())->method('getRequiredConfigKeys')->willReturn($required);
 
         if ($exception) {
             $this->expectException(ConfigException::class);
             $this->expectExceptionMessage($exception);
         }
 
-        $this->invokeMethod([$this->object, 'verifyRequired'], [$config]);
+        $this->invokeMethod([$this->object, 'verifyRequiredConfigKeys'], [$config]);
     }
 
     /**
      * @return Generator
      */
-    public function dataProviderTestVerifyRequired(): Generator
+    public function dataProviderTestVerifyRequiredConfigKeys(): Generator
     {
         yield 'valid_1' => [['requiredKey'], ['requiredKey' => 'value', 'optionalKey' => 'value']];
         yield 'valid_2' => [['requiredKey1', 'requiredKey2'], ['requiredKey1' => 'value', 'requiredKey2' => 'value']];
@@ -227,11 +227,11 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * @covers ::verifyUnknownKeys
-     * @dataProvider dataProviderTestVerifyUnknownKeys
+     * @covers ::verifyUnknownConfigKeys
+     * @dataProvider dataProviderTestVerifyUnknownConfigKeys
      * @throws ReflectionException
      */
-    public function testVerifyUnknownKeys(array $configKeys, array $config, ?string $exception = null): void
+    public function testVerifyUnknownConfigKeys(array $configKeys, array $config, ?string $exception = null): void
     {
         $this->object = $this
             ->getMockBuilder(Config::class)
@@ -246,13 +246,13 @@ class ConfigTest extends TestCase
             $this->expectExceptionMessage($exception);
         }
 
-        $this->invokeMethod([$this->object, 'verifyUnknownKeys'], [$config]);
+        $this->invokeMethod([$this->object, 'verifyUnknownConfigKeys'], [$config]);
     }
 
     /**
      * @return Generator
      */
-    public function dataProviderTestVerifyUnknownKeys(): Generator
+    public function dataProviderTestVerifyUnknownConfigKeys(): Generator
     {
         yield 'valid' => [['test' => 'string'], ['test' => 'test']];
         yield 'invalid' => [['test' => 'string'], ['unknown' => 'test'], 'Unknown config key unknown'];
