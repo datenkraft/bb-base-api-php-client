@@ -34,6 +34,16 @@ class Config
     protected $verifySsl;
 
     /**
+     * @var array
+     */
+    protected $configKeys;
+
+    /**
+     * @var array
+     */
+    protected $required;
+
+    /**
      * @return string
      */
     public function getClientId(): string
@@ -124,6 +134,42 @@ class Config
     }
 
     /**
+     * @return array
+     */
+    public function getRequired(): array
+    {
+        return $this->required;
+    }
+
+    /**
+     * @param array $required
+     * @return Config
+     */
+    protected function setRequired(array $required): Config
+    {
+        $this->required = $required;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfigKeys(): array
+    {
+        return $this->configKeys;
+    }
+
+    /**
+     * @param array $configKeys
+     * @return Config
+     */
+    protected function setConfigKeys(array $configKeys): Config
+    {
+        $this->configKeys = $configKeys;
+        return $this;
+    }
+
+    /**
      * @param array $configOptions
      * @return Config
      * @throws ConfigException
@@ -141,6 +187,16 @@ class Config
      */
     public function __construct(array $configOptions)
     {
+        $this->setConfigKeys(
+            [
+                'clientId' => 'string',
+                'clientSecret' => 'string',
+                'oAuthScopes' => 'array',
+                'oAuthTokenUrl' => 'string',
+                'verifySsl' => 'boolean'
+            ]
+        );
+        $this->setRequired(['clientId', 'clientSecret']);
         $this->verifyConfigOptions($configOptions);
         $this->initByConfigOptions($configOptions);
 
@@ -153,13 +209,49 @@ class Config
      */
     protected function verifyConfigOptions(array $config): void
     {
-        if (
-            empty($config['clientId'])
-            || empty($config['clientSecret'])
-            || empty($config['oAuthScopes'])
-            || !is_array($config['oAuthScopes'])
-        ) {
-            throw new ConfigException('Missing config key');
+        $this->verifyRequired($config);
+        $this->verifyUnknownKeys($config);
+        $this->verifyConfigKeys($config);
+    }
+
+    /**
+     * @param array $config
+     * @throws ConfigException
+     */
+    protected function verifyRequired(array $config): void
+    {
+        foreach ($this->getRequired() as $requiredKey) {
+            if (empty($config[$requiredKey])) {
+                throw new ConfigException('Missing required config key ' . $requiredKey);
+            }
+        }
+    }
+
+    /**
+     * @param array $config
+     * @throws ConfigException
+     */
+    protected function verifyConfigKeys(array $config): void
+    {
+        foreach ($this->getConfigKeys() as $key => $type) {
+            if (isset($config[$key]) && gettype($config[$key]) != $type) {
+                throw new ConfigException('Config key ' . $key . ' must be of type ' . $type);
+            }
+        }
+    }
+
+    /**
+     * @param array $config
+     * @throws ConfigException
+     */
+    protected function verifyUnknownKeys(array $config): void
+    {
+        $allowedKeys = array_keys($this->getConfigKeys());
+        $keys = array_keys($config);
+        foreach ($keys as $key) {
+            if (!in_array($key, $allowedKeys)) {
+                throw new ConfigException('Unknown config key ' . $key);
+            }
         }
     }
 
