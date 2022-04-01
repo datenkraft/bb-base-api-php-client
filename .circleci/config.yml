@@ -36,7 +36,7 @@ jobs:
             - vendor
           key: php-vendor-lib-prod-{{ checksum "composer.lock" }}
       - persist_to_workspace:
-          root: /var/www/project
+          root: /home/app
           paths:
             - .
   *job-name-test :
