@@ -9,6 +9,7 @@ use League\OAuth2\Client\Provider\GenericProvider;
 
 class Auth
 {
+
     /**
      * @param string $clientId
      * @param string $clientSecret
