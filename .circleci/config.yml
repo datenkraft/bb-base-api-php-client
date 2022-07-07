@@ -13,7 +13,7 @@ executors:
       - image: alpine/git:latest
   php-dev:
     docker:
-      - image: europe-docker.pkg.dev/dk-gg-rgstry/base/php:dev
+      - image: europe-docker.pkg.dev/dk-gg-rgstry/base/php-cli:1.0.5-dev
         auth:
           username: _json_key
           password: $GCLOUD_SERVICE_ACCOUNT
@@ -36,7 +36,7 @@ jobs:
             - vendor
           key: php-vendor-lib-prod-{{ checksum "composer.lock" }}
       - persist_to_workspace:
-          root: /var/www/project
+          root: /home/app/project
           paths:
             - .
   *job-name-test :
