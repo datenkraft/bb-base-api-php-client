@@ -22,8 +22,8 @@
     "nyholm/psr7": "^1.4"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "^3.6",
-    "phpunit/phpunit": "^9.5",
+    "squizlabs/php_codesniffer": "^3.7",
+    "phpunit/phpunit": "^9.6",
     "ext-json": "*"
   },
   "autoload": {
