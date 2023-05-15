@@ -6,7 +6,7 @@ The Base API PHP Client enables you to work with Backbone PHP Client packages.
 This package is not standalone, it's required in Backbone PHP Client packages
 
 ## Prerequisites
-- PHP 7.2 or later for production
+- PHP 8.0 or later for production
 
 ## Installation & Usage
 It's required in Backbone PHP Client packages
