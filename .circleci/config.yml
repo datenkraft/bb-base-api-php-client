@@ -13,7 +13,7 @@ executors:
       - image: alpine/git:latest
   php-dev:
     docker:
-      - image: europe-docker.pkg.dev/dk-gg-rgstry/base/php-cli:1.0.5-dev
+      - image: europe-docker.pkg.dev/dk-gg-rgstry/base/php-cli:dev
         auth:
           username: _json_key
           password: $GCLOUD_SERVICE_ACCOUNT
